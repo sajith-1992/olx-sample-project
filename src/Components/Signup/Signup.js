@@ -3,7 +3,8 @@ import React, { useState,useContext } from 'react';
 import Logo from '../../olx-logo.png';
 import './Signup.css';
 import { FirebaseContext } from '../../store/FirebaseContext';
-
+import {  createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from '../../firebase/config'
 export default function Signup() {
   const[username,setUsername]=useState("")
   const[email,setEmail]=useState("")
@@ -14,13 +15,27 @@ export default function Signup() {
 
   const handleSubmit=(e)=>{
     e.preventDefault()
+    
+    
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
     console.log(db)
 
   }
   return (
     <div>
       <div className="signupParentDiv">
-        <img width="200px" height="200px" src={Logo}></img>
+         <img width="200px" height="200px" src={Logo}></img>
         <form onSubmit={handleSubmit}>
           <label htmlFor="fname">Username</label>
           <br />
