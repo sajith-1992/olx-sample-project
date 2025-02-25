@@ -3,7 +3,7 @@ import React, { useState,useContext } from 'react';
 import Logo from '../../olx-logo.png';
 import './Signup.css';
 import { FirebaseContext } from '../../store/FirebaseContext';
-import {  createUserWithEmailAndPassword } from "firebase/auth";
+import {  createUserWithEmailAndPassword,updateProfile  } from "firebase/auth";
 import {auth} from '../../firebase/config'
 export default function Signup() {
   const[username,setUsername]=useState("")
@@ -13,25 +13,30 @@ export default function Signup() {
   const{db}=useContext(FirebaseContext)
   
 
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-    
-    
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log(user)
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
-    console.log(db)
-
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!username || !email || !phone || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
+  
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      await updateProfile(user, {
+        displayName: username,});
+  
+      console.log(user);
+      // You can also save additional user info to Firestore here
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Error signing up:", errorCode, errorMessage);
+      alert(errorMessage); // Show error message to the user
+    }
+  };
   return (
     <div>
       <div className="signupParentDiv">
