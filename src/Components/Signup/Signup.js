@@ -4,8 +4,11 @@ import Logo from '../../olx-logo.png';
 import './Signup.css';
 import { FirebaseContext } from '../../store/FirebaseContext';
 import {  createUserWithEmailAndPassword,updateProfile  } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { doc, setDoc } from "firebase/firestore"; 
 import {auth} from '../../firebase/config'
 export default function Signup() {
+  
   const[username,setUsername]=useState("")
   const[email,setEmail]=useState("")
   const[phone,setPhone]=useState("")
@@ -29,6 +32,15 @@ export default function Signup() {
         displayName: username,});
   
       console.log(user);
+      await setDoc(doc(db, "users", "UserDetails"), {
+        id: user.uid,
+        user: username,
+        phone:phone
+      })
+      navigate("/login");
+
+      
+       
       // You can also save additional user info to Firestore here
     } catch (error) {
       const errorCode = error.code;
