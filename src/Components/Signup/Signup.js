@@ -4,13 +4,9 @@ import './Signup.css';
 import { FirebaseContext } from '../../store/FirebaseContext';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-
-
-
-
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from '../../firebase/config';
+
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -18,7 +14,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const { db } = useContext(FirebaseContext);
+  const { db,auth } = useContext(FirebaseContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
