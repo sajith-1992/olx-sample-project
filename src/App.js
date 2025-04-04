@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useContext} from 'react';
 import './App.css';
 import SignupPage from './Pages/Signup';
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -12,8 +12,13 @@ import Login from'./Pages/Login'
  * ?  =====Import Components=====
  */
 import Home from './Pages/Home';
+import { AuthContext } from './store/Context';
 
 function App() {
+const {user}=useContext(AuthContext)
+useEffect(()=>{console
+.log(user)})
+
   return (
     <BrowserRouter>
 
